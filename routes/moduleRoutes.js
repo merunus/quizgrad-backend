@@ -29,7 +29,6 @@ router.post(
   "/create",
   checkAuth,
   moduleCreateValidation,
-  // moduleWordsValidation,
   handleValidationErrors,
   createModule
 );
