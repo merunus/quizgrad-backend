@@ -8,6 +8,14 @@ const register = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
+    const checkEmail = await User.findOne({ email: req.body.email });
+
+    if (checkEmail) {
+      return res.status(501).json({
+        message: "This email already used!",
+      });
+    }
+
     const doc = new User({
       email: req.body.email,
       userName: req.body.userName,

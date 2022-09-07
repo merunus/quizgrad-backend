@@ -1,4 +1,5 @@
 const express = require("express");
+const { googleAuth } = require("../controllers/GoogleAuth");
 const router = express.Router();
 const {
   login,
@@ -14,6 +15,7 @@ const {
   updateUserValidation,
 } = require("../validation/validation");
 
+router.post("/googleAuth", googleAuth);
 router.post("/register", registerValidation, handleValidationErrors, register);
 router.post("/login", loginValidation, handleValidationErrors, login);
 router.get("/me", checkAuth, getMe);
