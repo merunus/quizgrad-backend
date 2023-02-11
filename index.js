@@ -12,23 +12,32 @@ const app = express();
 const PORT = process.env.PORT || 5555;
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://quizgrad-react-ts.vercel.app",
+    credentials: true,
+  })
+);
 app.use(xss());
 app.use(helmet());
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", true);
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization"
+    "Origin, X-Requested, Content-Type, Accept Authorization"
   );
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Methods", "POST, PUT, PATCH, GET, DELETE");
+    return res.status(200).json({});
+  }
   next();
 });
+
+// User Routes
+app.use("/auth", userRouter);
+
+// Module Routes
+app.use("/modules", modulesRouter);
 
 const start = async () => {
   try {
@@ -41,9 +50,3 @@ const start = async () => {
   }
 };
 start();
-
-// User Routes
-app.use("/auth", userRouter);
-
-// Module Routes
-app.use("/modules", modulesRouter);
