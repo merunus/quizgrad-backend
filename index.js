@@ -14,8 +14,7 @@ const PORT = process.env.PORT || 5555;
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://quizgrad-react-ts.vercel.app",
-    credentials: true,
+    origin: "*",
   })
 );
 app.use(xss());
